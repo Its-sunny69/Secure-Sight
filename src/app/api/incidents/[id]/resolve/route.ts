@@ -1,17 +1,17 @@
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-import { parse } from "path";
 
 const prisma = new PrismaClient();
 
 export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { id: string } }
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const id = parseInt(params.id);
+  const { id } = await params;
+  const incidentId = parseInt(id);
 
   const incident = await prisma.incident.findUnique({
-    where: { id },
+    where: { id: incidentId },
   });
 
   if (!incident) {
@@ -19,16 +19,16 @@ export async function PATCH(
   }
 
   const updatedIncident = await prisma.incident.update({
-    where: { id },
+    where: { id: incidentId },
     data: { resolved: !incident?.resolved },
     include: {
-    camera: {
-      select: {
-        name: true,
-        location: true,
+      camera: {
+        select: {
+          name: true,
+          location: true,
+        },
       },
     },
-  },
   });
 
   return NextResponse.json(updatedIncident);

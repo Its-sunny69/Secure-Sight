@@ -8,16 +8,13 @@ import {
 } from "@mui/icons-material";
 import { Cctv, ChevronDown } from "lucide-react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { ReactElement, use, useState } from "react";
+import { ReactElement, useState } from "react";
 import Link from "next/link";
 
-const navlist = ["Dashboard", "Camera", "Scenes", "Incidents", "Users"];
-
-type NavItem = (typeof navlist)[number];
+type NavItem = "Dashboard" | "Camera" | "Scenes" | "Incidents" | "Users";
 
 export default function Navbar({ navlist }: { navlist: NavItem[] }) {
-  const [activeRoute, setActiveRoute] = useState<String | null>("Dashboard");
+  const [activeRoute, setActiveRoute] = useState<string | null>("Dashboard");
 
   const icons: Record<NavItem, ReactElement> = {
     Dashboard: (

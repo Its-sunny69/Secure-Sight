@@ -1,14 +1,11 @@
 import { fetchCameras } from "@/utils/api";
 import {
-  getIncidentDuration,
   minutesToTime,
   minutesToTimeWithSeconds,
   timeToMinutes,
   timeToSeconds,
 } from "@/utils/formatters";
-import { Cctv } from "lucide-react";
-import { g } from "motion/react-client";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 
 const minutesInDay = 1440; // 24 hours * 60 minutes
 const majorTickInterval = 10; // Major tick every 10 minutes
@@ -51,11 +48,11 @@ export default function Timeline() {
 
   const handleMouseDown = () => setDragging(true);
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     setDragging(false);
-  };
+  }, []);
 
-  const handleMouseMove = (e: MouseEvent) => {
+  const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!dragging || !svgRef.current) return;
     const bounds = svgRef.current.getBoundingClientRect();
     let x = (e.clientX - bounds.left - leftPanelWidth) / scale;
@@ -79,7 +76,7 @@ export default function Timeline() {
           snapSeconds = endSec;
         }
       });
-    });
+    })
 
     // Snap if within threshold, else use actual drag
     if (snapSeconds !== null) {
@@ -87,7 +84,7 @@ export default function Timeline() {
     } else {
       setScrubberX(x);
     }
-  };
+  }, [dragging, incidentsData]);
 
   useEffect(() => {
     if (dragging) {
@@ -101,7 +98,7 @@ export default function Timeline() {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [dragging]);
+  }, [dragging, handleMouseMove, handleMouseUp]);
 
   const getIncidentColor = (type: IncidentType) => {
     switch (type) {

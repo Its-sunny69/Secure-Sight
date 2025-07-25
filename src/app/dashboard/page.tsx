@@ -9,7 +9,6 @@ import {
   SlowMotionVideo,
   TimesOneMobiledata,
 } from "@mui/icons-material";
-import { ca } from "date-fns/locale";
 import {
   CalendarDays,
   Cctv,
@@ -190,7 +189,7 @@ export default function DashboardPage() {
               {loading ? (
                 <div className="text-white text-center">Loading...</div>
               ) : optimisticIncidents && optimisticIncidents.length > 0 ? (
-                optimisticIncidents.map((incident, index) => (
+                optimisticIncidents.map((incident) => (
                   <motion.div
                     key={incident.id}
                     className="flex justify-between items-center"
