@@ -57,7 +57,6 @@ DATABASE_URL=your_postgresql_url
 * **TypeScript** - Type safety and better DX
 * **Tailwind CSS** - Utility-first styling
 * **SVG Timeline** - Better performance than Canvas
-* **React Three Fiber** - 3D model visualization
 
 **Backend**
 
@@ -73,6 +72,13 @@ DATABASE_URL=your_postgresql_url
 
 ## 🔮 If I Had More Time...
 
+- Learned more about video timeline integration and connected it with actual video playback and controls  
+- Improved the current timeline design for better visual clarity and usability  
+- Built a 3D model-based homepage with animations and interactions across all pages using motion 
+- Made the entire site fully responsive for mobile and tablet devices  
+- Implemented light mode toggle for better user experience 
+- Used Redux or Context API for global state management
+- Implemented SEO optimization techniques
 
 ---
 **Built with Next.js, TypeScript, and Prisma**
