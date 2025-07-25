@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
 
-First, run the development server:
+# SecureSight - Smart Security Monitoring System
 
-```bash
+A modern web application for intelligent security monitoring with real-time incident detection, camera management, and interactive timeline visualization.
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+* Node.js 18+
+* PostgreSQL database
+
+### Installation
+
+```
+# Clone and install
+git clone <repository-url>
+cd secure-sight
+npm install
+
+# Setup environment
+cp .env
+# Add your DATABASE_URL
+
+# Database setup
+npx prisma generate
+npx prisma db push
+npx prisma db seed
+
+# Start development
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📦 Deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Vercel (Recommended)
 
-## Learn More
+```
+# Ensure package.json includes postinstall in scripts
+"scripts": {
+    "postinstall": "prisma generate"
+  },
 
-To learn more about Next.js, take a look at the following resources:
+# Environment variables in Vercel dashboard:
+DATABASE_URL=your_postgresql_url
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🛠 Tech Decisions
 
-## Deploy on Vercel
+**Frontend**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+* **Next.js 15** - App Router for modern React patterns
+* **TypeScript** - Type safety and better DX
+* **Tailwind CSS** - Utility-first styling
+* **SVG Timeline** - Better performance than Canvas
+* **React Three Fiber** - 3D model visualization
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Backend**
+
+* **Prisma + PostgreSQL** - Type-safe database operations
+* **Next.js API Routes** - Serverless functions
+* **UTC timestamps** - Consistent timezone handling
+
+**Key Choices**
+
+* SVG over Canvas for timeline (better accessibility)
+* Prisma over raw SQL (type safety)
+* Component-based architecture (maintainability)
+
+## 🔮 If I Had More Time...
+
+
+---
+**Built with Next.js, TypeScript, and Prisma**
+---
