@@ -22,10 +22,9 @@ export function formatRange(start: string, end: string) {
 // Update timeToMinutes to handle UTC timestamps correctly
 export function timeToMinutes(timestamp: string) {
   const date = new Date(timestamp);
-  // Use UTC methods to get the actual time in the timestamp
   const hours = date.getUTCHours();
   const minutes = date.getUTCMinutes();
-  return hours * 60 + minutes; // Convert to total minutes in the day
+  return hours * 60 + minutes; 
 }
 
 // Update duration calculation

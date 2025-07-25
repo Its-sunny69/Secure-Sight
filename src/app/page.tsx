@@ -1,9 +1,7 @@
 export default function Home() {
   return (
     <main>
-      <div className="flex justify-between items-center">
-       <h1>Home</h1>
-      </div>
+      <div className="h-screen flex justify-center items-center"></div>
     </main>
   );
 }

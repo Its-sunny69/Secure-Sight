@@ -90,8 +90,6 @@ export default function DashboardPage() {
       try {
         const updatedIncident = await resolveIncident(id);
 
-        console.log("Incident resolved:", updatedIncident);
-
         startTransition(() => {
           setIncidents((prev) => prev.filter((incident) => incident.id !== id));
           setResolvedCount((prev) => prev + 1);
@@ -107,12 +105,11 @@ export default function DashboardPage() {
 
   return (
     <div className="my-6 font-inter">
-      <div className="grid h-[27rem] grid-cols-10 gap-4">
+      <div className="grid h-[25rem] grid-cols-11 gap-4">
         <div className="relative col-span-6 flex items-center justify-center rounded-sm">
           <video
             className="w-full rounded-sm object-cover aspect-video"
             src="/video/example-video.mp4"
-            // controls
           >
             video is not supported!
           </video>
@@ -163,28 +160,28 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="col-span-4 flex flex-col bg-[#131313] rounded-sm overflow-auto">
+        <div className="col-span-5 flex flex-col bg-[#131313] rounded-sm overflow-auto">
           <div className="flex justify-between items-center p-4 font-jakarta">
             <div className="flex justify-center items-center gap-2">
               <div className="bg-[#450A0A] rounded-full p-1">
                 <div className="bg-[#7F1D1D] rounded-full p-2">
-                  <TriangleAlert className="text-[#F87171] w-6" />
+                  <TriangleAlert className="text-[#F87171] w-4 h-4" />
                 </div>
               </div>
-              <p className="text-[#FAFAFA] text-lg font-semibold">
+              <p className="text-[#FAFAFA] font-semibold">
                 {optimisticIncidents.length} Unresolved Incidents
               </p>
             </div>
 
             <div className="flex justify-center items-center gap-1 text-xs bg-[#0B0B0B] py-0.5 px-2 rounded-full border border-[#404040]">
-              <CheckCheck className="text-green-500 w-4" />
+              <CheckCheck className="text-green-500 w-3 h-3" />
               <p className="text-[#D4D4D4]">
                 {optimisticResolvedCount} resolved incidents
               </p>
             </div>
           </div>
 
-          <div className="p-4 grid gap-4 overflow-auto">
+          <div className="px-4 py-2 grid gap-4 overflow-auto custom-scrollbar">
             <AnimatePresence>
               {loading ? (
                 <div className="text-white text-center">Loading...</div>
@@ -202,8 +199,8 @@ export default function DashboardPage() {
                     <Image
                       src={incident.thumbnailUrl}
                       alt={`Camera thumbnail- ${incident.cameraId}`}
-                      width={140}
-                      height={140}
+                      width={135}
+                      height={135}
                       className="object-cover rounded aspect-video"
                     />
 
@@ -213,22 +210,20 @@ export default function DashboardPage() {
                           {icons[incident.type] || (
                             <TriangleAlert className="w-4 text-[#F87171]" />
                           )}
-                          <p className="text-sm font-semibold">
-                            {incident.type}
-                          </p>
+                          <p className="text-xs font-bold">{incident.type}</p>
                         </div>
 
-                        <div className="flex flex-col justify-center items-start">
-                          <div className="flex justify-center items-center gap-2 text-xs">
-                            <Cctv className="w-4" />
+                        <div className="flex flex-col justify-between items-start">
+                          <div className="flex justify-center items-center gap-2 text-[10px]">
+                            <Cctv className="w-3" />
                             <p>
                               {incident.camera?.location}{" "}
                               {incident.camera?.name}
                             </p>
                           </div>
 
-                          <div className="flex justify-center items-center gap-2 text-xs">
-                            <Clock className="w-4" />
+                          <div className="flex justify-center items-center gap-2 text-[10px]">
+                            <Clock className="w-3" />
                             <p className="font-semibold">
                               {formatRange(incident.tsStart, incident.tsEnd)}
                             </p>

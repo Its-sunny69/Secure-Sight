@@ -10,11 +10,23 @@ import { Cctv, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { ReactElement, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 type NavItem = "Dashboard" | "Camera" | "Scenes" | "Incidents" | "Users";
 
 export default function Navbar({ navlist }: { navlist: NavItem[] }) {
-  const [activeRoute, setActiveRoute] = useState<string | null>("Dashboard");
+  const pathname = usePathname();
+
+  const routeNameMap: Record<string, NavItem | null> = {
+    "/dashboard": "Dashboard",
+    "/camera": "Camera",
+    "/scenes": "Scenes",
+    "/incidents": "Incidents",
+    "/users": "Users",
+    "/": null,
+  };
+
+  const activeRoute = routeNameMap[pathname] || null;
 
   const icons: Record<NavItem, ReactElement> = {
     Dashboard: (
@@ -44,23 +56,21 @@ export default function Navbar({ navlist }: { navlist: NavItem[] }) {
 
   return (
     <nav className="flex font-jakarta items-center justify-between text-white py-6 mx-6">
-      <div className="flex items-center justify-between gap-2">
-        <Image src="/logo.png" alt="Logo" width={20} height={20} />
-        <h1 className="text-xl">
-          MANDLAC<span className="font-bold">X</span>
-        </h1>
+      <div>
+        <Link href="/" className="flex items-center justify-between gap-2">
+          <Image src="/logo.png" alt="Logo" width={20} height={20} />
+          <h1>
+            MANDLAC<span className="font-extrabold">X</span>
+          </h1>
+        </Link>
       </div>
 
       <ul className="flex flex-1 justify-center items-center space-x-8 text-xs font-semibold">
         {navlist.map((item, index) => (
-          <li
-            key={index}
-            onClick={() => setActiveRoute(item)}
-            className="flex justify-center items-center gap-2"
-          >
+          <li key={index}>
             <Link
               href={`/${item.toLowerCase()}`}
-              className="flex items-center gap-2"
+              className="flex justify-center items-center gap-2"
             >
               {icons[item]}
               <span>{item}</span>
@@ -70,7 +80,6 @@ export default function Navbar({ navlist }: { navlist: NavItem[] }) {
       </ul>
 
       <div className="flex items-center justify-between gap-2 text-[#F5F5F5] cursor-pointer">
-        
         <Image
           src="/user.jpg"
           alt="user"

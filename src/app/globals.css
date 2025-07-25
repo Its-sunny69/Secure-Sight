@@ -1,6 +1,25 @@
 @import "tailwindcss";
 
 @theme inline {
-    --font-inter: var(--font-inter);
-    --font-jakarta: var(--font-jakarta);
+  --font-inter: var(--font-inter);
+  --font-jakarta: var(--font-jakarta);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #343434;
+  border-radius: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #ffd700;
+  border-radius: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #eab308;
 }

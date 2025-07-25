@@ -20,8 +20,8 @@ type IncidentType = "Unauthorized Access" | "Gun Threat" | "Face Recognised";
 
 interface Incident {
   id: string;
-  tsStart: string; // ISO datetime string
-  tsEnd: string; // ISO datetime string
+  tsStart: string;
+  tsEnd: string;
   type: IncidentType;
 }
 
@@ -32,7 +32,6 @@ interface Camera {
   incidents: Incident[];
 }
 
-// Type for the complete array
 type IncidentsData = Camera[];
 
 export default function Timeline() {
@@ -52,39 +51,42 @@ export default function Timeline() {
     setDragging(false);
   }, []);
 
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    if (!dragging || !svgRef.current) return;
-    const bounds = svgRef.current.getBoundingClientRect();
-    let x = (e.clientX - bounds.left - leftPanelWidth) / scale;
-    x = Math.max(0, Math.min(x, minutesInDay));
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (!dragging || !svgRef.current) return;
+      const bounds = svgRef.current.getBoundingClientRect();
+      let x = (e.clientX - bounds.left - leftPanelWidth) / scale;
+      x = Math.max(0, Math.min(x, minutesInDay));
 
-    // Convert current drag position (in minutes) to seconds
-    const dragSeconds = x * 60;
-    let snapSeconds: number | null = null;
+      // Convert current drag position (in minutes) to seconds
+      const dragSeconds = x * 60;
+      let snapSeconds: number | null = null;
 
-    const SNAP_THRESHOLD = 120; // seconds
+      const SNAP_THRESHOLD = 120; // seconds
 
-    // Check start and end of each incident
-    incidentsData.forEach((camera) => {
-      camera.incidents.forEach((incident: Incident) => {
-        const startSec = timeToSeconds(incident.tsStart);
-        const endSec = timeToSeconds(incident.tsEnd);
-        if (Math.abs(dragSeconds - startSec) <= SNAP_THRESHOLD) {
-          snapSeconds = startSec;
-        }
-        if (Math.abs(dragSeconds - endSec) <= SNAP_THRESHOLD) {
-          snapSeconds = endSec;
-        }
+      // Check start and end of each incident
+      incidentsData.forEach((camera) => {
+        camera.incidents.forEach((incident: Incident) => {
+          const startSec = timeToSeconds(incident.tsStart);
+          const endSec = timeToSeconds(incident.tsEnd);
+          if (Math.abs(dragSeconds - startSec) <= SNAP_THRESHOLD) {
+            snapSeconds = startSec;
+          }
+          if (Math.abs(dragSeconds - endSec) <= SNAP_THRESHOLD) {
+            snapSeconds = endSec;
+          }
+        });
       });
-    })
 
-    // Snap if within threshold, else use actual drag
-    if (snapSeconds !== null) {
-      setScrubberX(snapSeconds / 60);
-    } else {
-      setScrubberX(x);
-    }
-  }, [dragging, incidentsData]);
+      // Snap if within threshold, else use actual drag
+      if (snapSeconds !== null) {
+        setScrubberX(snapSeconds / 60);
+      } else {
+        setScrubberX(x);
+      }
+    },
+    [dragging, incidentsData]
+  );
 
   useEffect(() => {
     if (dragging) {
@@ -128,10 +130,9 @@ export default function Timeline() {
 
   const timelineHeight = incidentsData.length * cameraRowHeight + 55; // total height
 
-  console.log("Incident Data:", incidentsData);
   return (
     <div
-      className="overflow-x-scroll bg-[#131313] py-2 font-jakarta rounded-sm"
+      className="overflow-x-scroll custom-scrollbar bg-[#131313] py-2 font-jakarta rounded-sm"
       style={{ fontFamily: "sans-serif" }}
     >
       <svg
@@ -164,13 +165,13 @@ export default function Timeline() {
                 y={y}
                 width="100%"
                 height={incidentBarHeight}
-                fill={"#232323"} // Background color for camera row
+                fill={"#232323"}
                 rx={4}
               />
 
               {/* SVG Icon from public folder */}
               <image
-                href="/icons/camera.svg" // Place your SVG in public/icons/camera.svg
+                href="/icons/camera.svg"
                 x={15}
                 y={y + incidentBarHeight / 2 - 8}
                 width={16}
@@ -215,7 +216,7 @@ export default function Timeline() {
         {/* Minor ticks between the major ticks (every minute) */}
         {Array.from({ length: totalMajorTicks }, (_, i) => {
           const baseMinutes = i * majorTickInterval;
-          // Skip last major tick as no ticks after 24:00
+
           if (baseMinutes >= minutesInDay) return null;
 
           return Array.from({ length: 9 }, (_, j) => {
@@ -246,22 +247,8 @@ export default function Timeline() {
             const x = startMinutes * scale + leftPanelWidth;
             const width = Math.max(duration * scale);
 
-            console.log(
-              "Incident:",
-              incident,
-              "X:",
-              x,
-              "Width:",
-              width,
-              "startMinutes:",
-              startMinutes,
-              "endMinutes:",
-              endMinutes
-            );
-
             return (
               <g key={incident.id}>
-                {/* Incident Bar Background */}
                 <rect
                   x={x}
                   y={y + 5}
@@ -274,10 +261,9 @@ export default function Timeline() {
                   ry={4}
                 />
 
-                {/* Icon in the center of the bar */}
                 <image
                   href={getIncidentIcon(incident.type)}
-                  x={x + width / 2 - 8} // Center the 16px icon
+                  x={x + width / 2 - 8}
                   y={y + incidentBarHeight / 2 - 8}
                   width={16}
                   height={16}
@@ -292,7 +278,7 @@ export default function Timeline() {
                   fill="transparent"
                   style={{ cursor: "pointer" }}
                 >
-                  <title>{incident.type}</title> {/* Native SVG tooltip */}
+                  <title>{incident.type}</title>
                 </rect>
               </g>
             );
@@ -313,7 +299,6 @@ export default function Timeline() {
 
           {/* Moving time display on top of scrubber */}
           <g>
-            {/* Background for time text */}
             <rect
               x={scrubberX * scale + leftPanelWidth - 35}
               y={1}
